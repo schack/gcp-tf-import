@@ -6,7 +6,6 @@ Import firestore indexes to terraform code
 import subprocess
 import json
 import re
-import argparse
 
 
 def get_indexjson(project, database):
@@ -65,24 +64,10 @@ def create_tf_indexes(project, database, indexlist, filename):
         f.writelines(importlines)
 
 
-def main():
-    """
-    Main function to parse arguments and create Terraform files.
-    """
-    parser = argparse.ArgumentParser(description='Create Terraform code from Google Cloud Firestore indexes.')
-    parser.add_argument('project', type=str, help='The ID of the Google Cloud project')
-    parser.add_argument('--database', type=str, default='(default)',
-                        help='The database to import indexes from (default: (default)')
-    parser.add_argument('--filename', type=str, default=None,
-                        help='The Terraform filename, default is firestore_index_<database>_<project>.tf')
-    args = parser.parse_args()
+def import_firestore_index(args):
 
     indexjson = get_indexjson(args.project, args.database)
     if indexjson:
         create_tf_indexes(args.project, args.database, indexjson, args.filename)
     else:
         print('ERROR: No indexes found, check authentication, project name & database name.')
-
-
-if __name__ == '__main__':
-    main()
