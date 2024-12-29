@@ -2,6 +2,7 @@ import argparse
 
 from importers.firestore_index import import_firestore_index
 from importers.dns_authorization import import_dns_authorization
+from importers.certificate_map import import_certificate_maps
 
 def main():
     """
@@ -12,7 +13,7 @@ def main():
 
     firestore_index_parser = subparsers.add_parser("firestore-index", help="Import Firestore indexes")
     dns_authz_parser = subparsers.add_parser("dns-authz", help="Import DNS authorizations")
-
+    certificate_map_parser = subparsers.add_parser("certificate-map", help="Import Certificate Map")
 
     firestore_index_parser.add_argument('project', type=str,
                                         help='The ID of the Google Cloud project')
@@ -26,6 +27,9 @@ def main():
     dns_authz_parser.add_argument('--filename', type=str, default=None,
                                         help='The Terraform filename, default is dns_authorization_<project>.tf')
 
+    certificate_map_parser.add_argument('project', type=str,
+                                        help='The ID of the Google Cloud project')
+
 
     args = parser.parse_args()
 
@@ -33,8 +37,8 @@ def main():
         import_firestore_index(args)
     elif args.command == 'dns-authz':
         import_dns_authorization(args)
-
-
+    elif args.command == 'certificate-map':
+        import_certificate_maps(args)
 
 
 if __name__ == '__main__':

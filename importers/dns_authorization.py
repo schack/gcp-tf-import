@@ -37,7 +37,6 @@ def create_dns_authz(project, dnsauthzlist, filename):
         filename = f'dns_authorizations_{to_snake_case(project)}.tf'
     with open(filename, 'w', encoding='UTF-8') as f:
         for dnsauthz in dnsauthzlist:
-            # "name": "projects/storytel-148812/locations/global/dnsAuthorizations/mofibo-com-dns-authorization",
             match = re.search(r'locations/([^/]+)/dnsAuthorizations/(.+$)', dnsauthz['name'])
             location = match.group(1)
             dnsauthzid = match.group(2)
@@ -74,4 +73,4 @@ def import_dns_authorization(args):
     if dnsauthzlist:
         create_dns_authz(args.project, dnsauthzlist, args.filename)
     else:
-        print('ERROR: No indexes found, check authentication, project name & database name.')
+        print('ERROR: No DNS authorizations found, check authentication & project name.')
