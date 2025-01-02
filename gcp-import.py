@@ -3,6 +3,7 @@ import argparse
 from importers.firestore_index import import_firestore_index
 from importers.dns_authorization import import_dns_authorization
 from importers.certificate_map import import_certificate_maps
+from importers.certificate import import_certificate
 
 def main():
     """
@@ -14,6 +15,8 @@ def main():
     firestore_index_parser = subparsers.add_parser("firestore-index", help="Import Firestore indexes")
     dns_authz_parser = subparsers.add_parser("dns-authz", help="Import DNS authorizations")
     certificate_map_parser = subparsers.add_parser("certificate-map", help="Import Certificate Map")
+    certificate_parser = subparsers.add_parser("certificate", help="Import Certificates")
+
 
     firestore_index_parser.add_argument('project', type=str,
                                         help='The ID of the Google Cloud project')
@@ -30,6 +33,10 @@ def main():
     certificate_map_parser.add_argument('project', type=str,
                                         help='The ID of the Google Cloud project')
 
+    certificate_parser.add_argument('project', type=str,
+                                        help='The ID of the Google Cloud project')
+
+
 
     args = parser.parse_args()
 
@@ -39,7 +46,8 @@ def main():
         import_dns_authorization(args)
     elif args.command == 'certificate-map':
         import_certificate_maps(args)
-
+    elif args.command == 'certificate':
+        import_certificate(args)
 
 if __name__ == '__main__':
     main()
